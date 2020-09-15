@@ -1,0 +1,33 @@
+{
+  "name": "swagger-component-generator-library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://msp-wbench.wesp.telekom.net/gitlab/msp-team/swagger-component-generator-library.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "gm": "^1.23.1",
+    "graphicsmagick-static": "^0.1.4",
+    "html-to-text": "^5.1.1",
+    "jimp": "^0.6.4",
+    "lodash": "^4.17.15",
+    "media-type": "^0.3.1",
+    "moment": "^2.24.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "semver": "^6.3.0",
+    "shell-escape": "^0.2.0",
+    "simple-git": "^1.124.0",
+    "swagger-parser": "^8.0.0",
+    "swagger2openapi": "^5.3.1",
+    "transliteration": "^2.1.5"
+  }
+}
