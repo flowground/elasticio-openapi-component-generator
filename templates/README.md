@@ -78,9 +78,8 @@ Generated at: <%= moment().format() %>
 %>
 ## License
 
-**flow**ground :- Telekom iPaaS / <%= packageName %><br/>
-Copyright © 2019, [Deutsche Telekom AG](https://www.telekom.de)<br/>
-contact: flowground@telekom.de
+Deutsche Telekom: <%= packageName %><br/>
+Copyright © 2020, [Deutsche Telekom AG](https://www.telekom.de)<br/>
 
 All files of this connector are licensed under the Apache 2.0 License. For details
 see the file LICENSE on the toplevel directory.

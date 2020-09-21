@@ -4,9 +4,8 @@
  * Generated at: $NOW
  * Mass generator version: $GENERATOR_VERSION
  *
- * flowground :- Telekom iPaaS / $PACKAGE_NAME
- * Copyright © 2019, Deutsche Telekom AG
- * contact: flowground@telekom.de
+ * Deutsche Telekom: $PACKAGE_NAME
+ * Copyright © 2020, Deutsche Telekom AG
  *
  * All files of this connector are licensed under the Apache 2.0 License. For details
  * see the file LICENSE on the toplevel directory.
