@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "fs-extra": "^8.1.0",
+    "getopts": "^2.2.5",
     "gm": "^1.23.1",
     "graphicsmagick-static": "^0.1.4",
     "html-to-text": "^5.1.1",
