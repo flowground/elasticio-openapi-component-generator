@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Deutsche Telekom: elasticio-openapi-component-generator
  * Copyright © 2020, Deutsche Telekom AG
