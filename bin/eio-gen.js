@@ -12,9 +12,11 @@ const fse = require('fs-extra');
 const getopts = require('getopts');
 const readline = require('readline');
 
-const download = require('./download');
-const validate = require('./validate');
-const generate = require('./generate');
+const download = require('../lib/download');
+const validate = require('../lib/validate');
+const generate = require('../lib/generate');
+
+module.exports = eioGen;
 
 eioGen().catch(e => {
     console.error('An error occurred.', e.message);
