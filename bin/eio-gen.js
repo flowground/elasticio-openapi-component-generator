@@ -34,11 +34,18 @@ async function eioGen() {
         alias: {
             output: 'o',
             name: 'n',
+            help: 'h',
             string: ['o', 'n'],
         },
     });
+    if (options.help) {
+        printHelp();
+        return;
+    }
+
     const url = options._[0];
     if (!url) {
+        printHelp();
         throw new Error('Missing required parameter. Please provide an url to download the swagger definition from or a path to a local file.');
     }
 
@@ -103,4 +110,16 @@ function askQuestion(rl, question, defaultValue) {
     return new Promise(resolve =>
         rl.on('line', userInput => resolve(userInput || defaultValue))
     );
+}
+
+function printHelp() {
+    console.log(`
+        Usage: eio-gen [OPTIONS] {URL|FILE}
+        Usage example: eio-gen -o petstore-connector -n petstore https://petstore.swagger.io/v2/swagger.json\n
+        Generate a connector from an OpenAPI definition provided from an url or a local file.\n
+        Options:
+          -o, --output \t\t output directory where to store the downloaded and validated specification files and the generated connector
+          -n, --name \t\t connector name used as package name in package.json file
+          -h, --help \t\t display this help
+    `);
 }
