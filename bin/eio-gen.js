@@ -60,7 +60,6 @@ async function eioGen() {
     }
     const downloadedSpecFile = path.join(outputDir, 'openapi-original.json');
     const validatedSpecFile = path.join(outputDir, 'openapi-validated.json');
-    const generatePath = path.join(outputDir, 'generated');
 
     console.log('Downloading...');
     await download({
@@ -81,6 +80,7 @@ async function eioGen() {
             .then(def => _.kebabCase(def.info.title).replace(/-v-([0-9])+/g, '-v$1') + '-connector');
         connectorName = await askQuestion(rl, 'Connector name', defaultConnName);
     }
+    const generatePath = path.join(outputDir, connectorName);
 
     console.log('Generating...');
     await generate({
@@ -91,7 +91,12 @@ async function eioGen() {
     });
 
     console.log('Successfully generated. Connector has been saved in output directory:', generatePath);
+
     rl.close();
+
+    // cleanup
+    fse.remove(downloadedSpecFile).catch(err => console.error('Could not remove original API specification', err));
+    fse.remove(validatedSpecFile).catch(err => console.error('Could not remove validated API specification', err));
 }
 
 /**
