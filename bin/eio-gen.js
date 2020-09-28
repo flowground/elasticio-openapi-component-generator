@@ -12,11 +12,11 @@ const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
 const getopts = require('getopts');
-const readline = require('readline');
 
 const download = require('../lib/download');
 const validate = require('../lib/validate');
 const generate = require('../lib/generate');
+const Questionnaire = require('../lib/questionnaire');
 
 module.exports = eioGen;
 
@@ -35,6 +35,7 @@ async function eioGen() {
             output: 'o',
             name: 'n',
             help: 'h',
+            yes: 'y',
         },
         string: ['o', 'n'],
     });
@@ -43,21 +44,16 @@ async function eioGen() {
         return;
     }
 
+    const skipQuestionnaire = options.yes;
+    const q = new Questionnaire(skipQuestionnaire);
+
     const url = options._[0];
     if (!url) {
         printHelp();
         throw new Error('Missing required parameter. Please provide an url to download the swagger definition from or a path to a local file.');
     }
 
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    let outputDir = options.output;
-    if (!outputDir) {
-        outputDir = await askQuestion(rl, 'Output directory', 'output');
-    }
+    const outputDir = options.output || await q.ask('Ouput directory', 'output');
     const downloadedSpecFile = path.join(outputDir, 'openapi-original.json');
     const validatedSpecFile = path.join(outputDir, 'openapi-validated.json');
 
@@ -74,12 +70,9 @@ async function eioGen() {
         swaggerUrl: url,
     });
 
-    let connectorName = options.name;
-    if (!connectorName) {
-        const defaultConnName = await fse.readJson(validatedSpecFile)
-            .then(def => _.kebabCase(def.info.title).replace(/-v-([0-9])+/g, '-v$1') + '-connector');
-        connectorName = await askQuestion(rl, 'Connector name', defaultConnName);
-    }
+    const defaultConnName = await fse.readJson(validatedSpecFile)
+        .then(def => _.kebabCase(def.info.title).replace(/-v-([0-9])+/g, '-v$1') + '-connector');
+    const connectorName = options.name || await q.ask('Connector name', defaultConnName);
     const generatePath = path.join(outputDir, connectorName);
 
     console.log('Generating...');
@@ -92,29 +85,11 @@ async function eioGen() {
 
     console.log('Successfully generated. Connector has been saved in output directory:', generatePath);
 
-    rl.close();
+    q.finish();
 
     // cleanup
     fse.remove(downloadedSpecFile).catch(err => console.error('Could not remove original API specification', err));
     fse.remove(validatedSpecFile).catch(err => console.error('Could not remove validated API specification', err));
-}
-
-/**
- * Prompt user with a question, together with default value
- * Format: "Question text: (defaultValue)"
- *
- * @param {object} rl - readline interface
- * @param {string} question
- * @param {string} defaultValue
- * @returns {Promise<string>} - resolved with user input, if provided, else with default value
- */
-function askQuestion(rl, question, defaultValue) {
-    rl.setPrompt(question + ': (' + defaultValue + ') ');
-    rl.prompt();
-
-    return new Promise(resolve =>
-        rl.on('line', userInput => resolve(userInput || defaultValue))
-    );
 }
 
 function printHelp() {
@@ -125,6 +100,7 @@ function printHelp() {
         Options:
           -o, --output \t\t output directory where to store the downloaded and validated specification files and the generated connector
           -n, --name \t\t connector name used as package name in package.json file
+          -y, --yes \t\t automatically populate all options with default values
           -h, --help \t\t display this help
     `);
 }
