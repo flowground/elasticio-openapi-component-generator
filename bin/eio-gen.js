@@ -34,6 +34,7 @@ async function eioGen() {
         alias: {
             output: 'o',
             name: 'n',
+            string: ['o', 'n'],
         },
     });
     const url = options._[0];
