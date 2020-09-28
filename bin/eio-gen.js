@@ -35,8 +35,8 @@ async function eioGen() {
             output: 'o',
             name: 'n',
             help: 'h',
-            string: ['o', 'n'],
         },
+        string: ['o', 'n'],
     });
     if (options.help) {
         printHelp();
